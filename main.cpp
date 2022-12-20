@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-int main(){
+int main2(){
     RankTree rankTree;
     AbilityDataTeam player1(1, 13);
     AbilityDataTeam player2(2, 18);

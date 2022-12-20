@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
-project(Data_Structures_ex2)
+project(Data_Structures_ex2_new)
 
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
 
-add_executable(Data_Structures_ex2
+add_executable(Data_Structures_ex2_new
         avlTree.h
         Node.h
         Node.cpp
