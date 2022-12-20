@@ -105,4 +105,28 @@ private:
 
 
 
+
+
+class AbilityDataTeam {
+public:
+    AbilityDataTeam(int teamID, int ability);
+    AbilityDataTeam(const AbilityDataTeam& AbilityDataTeam) = default;
+    AbilityDataTeam& operator=(const AbilityDataTeam& AbilityDataTeam) = default;
+    ~AbilityDataTeam() = default;
+    bool operator<(const AbilityDataTeam& abilityDataTeam) const;
+    bool operator>(const AbilityDataTeam& abilityDataTeam) const;
+
+    int getTeamID() const;
+    int getTeamAbility() const;
+    int getTotalNodesInSubTrees() const;
+
+    void setTotalNodesInSubTrees(int totalNodesInSubTrees);
+
+private:
+    int m_teamID;
+    int m_ability;
+    int m_totalNodesInSubTrees;
+};
+
+
 #endif //DATA_STRUCTURES_EX1_RANKPLAYERDATA_H

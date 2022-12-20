@@ -1,4 +1,4 @@
-#include "HashTable.h"
+#include "hashTable.h"
 
 HashTable::HashTable(int size): m_arrLength(size), m_capacity(0){
 

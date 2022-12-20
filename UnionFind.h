@@ -7,7 +7,12 @@
 
 
 class UnionFind {
+
+/*    PlayerData* makeSet(int playerID, const permutation_t& spirit, int gamesPlayed, int ability, int cards,
+                        bool goalKeeper, Node<TeamData>* ptrTeam);*/
     Node<TeamData>* findTeamAux(PlayerData* player);
+    Node<TeamData>* unionTeamsAux(Node<TeamData>* team1, Node<TeamData>* team2);
+
 private:
     std::shared_ptr<AvlTree<TeamData>>* m_TeamTree;
 };
