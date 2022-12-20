@@ -10,19 +10,26 @@ public:
 
     HashTable() = delete;
     HashTable(int size);
-    HashTable(HashTable& otherTable) = delete;
-    HashTable& operator=(HashTable& otherTable) = delete;
+    HashTable(const HashTable& otherTable) = delete;
+    HashTable& operator=(const HashTable& otherTable) = delete;
     ~HashTable();
 
     void insert(PlayerData* playerToInsert);
     void rehash();
-    void deleteArr(LinkedList<HashPlayerData>** arr);
+    void rehashAux(std::shared_ptr<LinkedList<HashPlayerData>>* newArr, int newLength);
+    void deleteArr(std::shared_ptr<LinkedList<HashPlayerData>>* arr, int size) const;
+
+
+    std::shared_ptr<LinkedList<HashPlayerData>>* getArr() const;
+    int getLength();
+    int getCapacity();
 
 
 private:
-    LinkedList<HashPlayerData>** m_arr;
+    std::shared_ptr<LinkedList<HashPlayerData>>* m_arr;
     int m_arrLength;
     int m_capacity;
+    double m_perToRehash;
 };
 
 

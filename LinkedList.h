@@ -30,6 +30,7 @@ public:
 
 //    StatusType uniteListsNew(LinkedList<T>* List2, LinkedList<T>* newList);
     void clearList(LinkedListNode<T>* start, LinkedListNode<T>* end);
+    void clearList();
 
     int countNodes();
     ~LinkedList();
@@ -80,7 +81,7 @@ LinkedList<T>::LinkedList(const T& nullParam) {
 
 template<class T>
 LinkedList<T>::~LinkedList() {
-    clearList(m_start, m_end);
+    clearList();
 }
 
 template<class T>
@@ -120,6 +121,25 @@ void LinkedList<T>::clearList(LinkedListNode<T>* start, LinkedListNode<T>* end){
     }
     delete start;
 }
+
+
+template<class T>
+void LinkedList<T>::clearList(){
+    if(m_start != nullptr || m_end != nullptr){
+        LinkedListNode<T>* temp;
+        LinkedListNode<T>* start = m_start;
+        LinkedListNode<T>* end = m_end;
+        while (start != end){
+            temp = start;
+            start = start->getNext();
+            delete temp;
+        }
+        delete start;
+        this->m_start = nullptr;
+        this->m_end = nullptr;
+    }
+}
+
 
 template<class T>
 StatusType LinkedList<T>::insertBefore(LinkedListNode<T> *nodeToInsertBefore, LinkedListNode<T>* nodeToInsert) {
