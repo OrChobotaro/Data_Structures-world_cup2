@@ -19,6 +19,8 @@ HashTable::~HashTable() {
 
 void HashTable::insert(PlayerData* playerToInsert){
 
+    // if exist, not add
+
     if(playerToInsert->getPlayerID() <= 0){
         return;
     }

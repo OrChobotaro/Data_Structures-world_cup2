@@ -90,9 +90,9 @@ void TeamData::increaseTeamAbility(int newPlayerAbility) {
 
 PlayerData::PlayerData(int playerID, const permutation_t& spirit, int gamesPlayed, int ability, int cards, bool goalKeeper) :
     m_playerID(playerID), m_spirit(spirit), m_individualGamesPlayed(gamesPlayed), m_ability(ability), m_cards(cards),
-    m_isGoalKeeper(goalKeeper), m_calcPartialSpirit(0), m_calcTotalGamesPlayed(0), m_up(nullptr) {}
+    m_isGoalKeeper(goalKeeper), m_calcPartialSpirit(0), m_calcTotalGamesPlayed(0), m_ptrTeam(nullptr), m_up(nullptr) {}
 
-//todo: initialize ptr team
+
 
 int PlayerData::getPlayerID() const {
     return m_playerID;
