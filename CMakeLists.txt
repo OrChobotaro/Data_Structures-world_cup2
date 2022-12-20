@@ -7,7 +7,7 @@ include_directories(.)
 
 add_executable(Data_Structures_ex2
         avlTree.h
-        HashTable.h
+        hashTable.h
         HashTable.cpp
         HashPlayerData.h
         HashPlayerData.cpp
@@ -18,4 +18,7 @@ add_executable(Data_Structures_ex2
         wet2util.h
         worldcup23a2.cpp
         worldcup23a2.h
-        main.cpp)
+        main.cpp
+        Node.h
+        Node.cpp
+        my_tests.cpp)
