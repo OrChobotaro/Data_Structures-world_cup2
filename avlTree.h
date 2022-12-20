@@ -10,8 +10,7 @@
 
 
 
-template<class T>
-void updateHeights(Node<T>* node);
+
 
 
 template<class T>
@@ -55,6 +54,7 @@ public:
 
     Node<T>* newNode(const T& key); //todo: לבדוק אם צריך לקבל גם אב
 
+    virtual void updateHeights(Node<T>* node);
     int getHeight();
 
 private:
@@ -171,7 +171,7 @@ StatusType AvlTree<T>::insertToBinaryTree (Node<T>* node, const T& key) {
 
 
 template<class T>
-void updateHeights(Node<T> *node) {
+void AvlTree<T>::updateHeights(Node<T> *node) {
 
     while(node) {
         if (node->isLeaf()) {

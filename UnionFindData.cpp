@@ -178,3 +178,55 @@ bool PlayerData::operator<(const PlayerData &other) const {
 bool PlayerData::operator>(const PlayerData &other) const {
     return m_playerID > other.m_playerID;
 }
+
+
+
+///////////////////////------------------------------------------------------------------------------------------
+
+
+AbilityDataTeam::AbilityDataTeam(int teamID, int ability) : m_teamID(teamID), m_ability(ability),
+                                    m_totalNodesInSubTrees(0) {}
+
+
+bool AbilityDataTeam::operator<(const AbilityDataTeam &abilityDataTeam) const {
+    if (m_ability < abilityDataTeam.m_ability) {
+        return true;
+    }
+    else if (m_ability == abilityDataTeam.m_ability) {
+        if (m_teamID < abilityDataTeam.m_teamID) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+bool AbilityDataTeam::operator>(const AbilityDataTeam &abilityDataTeam) const {
+    if (m_ability > abilityDataTeam.m_ability) {
+        return true;
+    }
+    else if (m_ability == abilityDataTeam.m_ability) {
+        if (m_teamID > abilityDataTeam.m_teamID) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+int AbilityDataTeam::getTeamID() const {
+    return m_teamID;
+}
+
+int AbilityDataTeam::getTeamAbility() const {
+    return m_ability;
+}
+
+int AbilityDataTeam::getTotalNodesInSubTrees() const {
+    return m_totalNodesInSubTrees;
+}
+
+void AbilityDataTeam::setTotalNodesInSubTrees(int totalNodesInSubTrees) {
+    m_totalNodesInSubTrees = totalNodesInSubTrees;
+}
