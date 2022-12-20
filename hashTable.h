@@ -18,12 +18,14 @@ public:
     void rehash();
     void rehashAux(std::shared_ptr<LinkedList<HashPlayerData>>* newArr, int newLength);
     void deleteArr(std::shared_ptr<LinkedList<HashPlayerData>>* arr, int size) const;
+    PlayerData* find(int playerID);
 
 
     std::shared_ptr<LinkedList<HashPlayerData>>* getArr() const;
     int getLength();
     int getCapacity();
 
+    int countPlayers();
 
 private:
     std::shared_ptr<LinkedList<HashPlayerData>>* m_arr;

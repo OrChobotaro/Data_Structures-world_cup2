@@ -19,6 +19,10 @@ HashTable::~HashTable() {
 
 void HashTable::insert(PlayerData* playerToInsert){
 
+    if(playerToInsert->getPlayerID() <= 0){
+        return;
+    }
+
     int id = playerToInsert->getPlayerID();
     int cell = -1;
 
@@ -55,9 +59,9 @@ void HashTable::insert(PlayerData* playerToInsert){
 
     // check if rehash needed
 
-/*    if(m_capacity >= m_perToRehash*m_arrLength){
+    if(m_capacity >= m_perToRehash*m_arrLength){
         rehash();
-    }*/
+    }
 
 }
 
@@ -100,7 +104,7 @@ void HashTable::rehash() {
 }
 
 void HashTable::rehashAux(std::shared_ptr<LinkedList<HashPlayerData>> *newArr, int newLength) {
-
+    int newCapacity = 0;
     int newCell = -1;
     int currPlayerId = -1;
     HashPlayerData nullObj(-1, nullptr);
@@ -126,8 +130,9 @@ void HashTable::rehashAux(std::shared_ptr<LinkedList<HashPlayerData>> *newArr, i
                 try{
                     std::shared_ptr<LinkedList<HashPlayerData>> newList(new LinkedList<HashPlayerData>(nullObj));
                     newArr[newCell] = newList;
+                    newCapacity++;
                 } catch (std::bad_alloc& e){
-                    //todo: reverse all
+                    //todo: reverse all?
                     throw;
                 }
             }
@@ -141,9 +146,40 @@ void HashTable::rehashAux(std::shared_ptr<LinkedList<HashPlayerData>> *newArr, i
         list->getStart()->setNext(temp);
         temp->setPrevious(list->getStart());
     }
+    m_capacity = newCapacity;
 }
 
 
+int HashTable::countPlayers(){
+    int counter = 0;
+
+    for(int i = 0; i < m_arrLength; i++){
+        if(m_arr[i] != nullptr){
+            counter+=m_arr[i]->countNodes();
+        }
+    }
+    return counter;
+}
+
+
+PlayerData* HashTable::find(int playerID){
+
+    int cell = playerID % m_arrLength;
+    std::shared_ptr<LinkedList<HashPlayerData>> list = m_arr[cell];
+    if(list == nullptr){
+        return nullptr;
+    }
+    LinkedListNode<HashPlayerData> *temp = list->getStart()->getNext();
+
+    while(temp->getData().getID() != playerID && temp != list->getEnd()){
+        temp = temp->getNext();
+    }
+    if(temp != list->getEnd()){
+        return temp->getData().getPtr();
+    } else {
+        return nullptr;
+    }
+}
 
 
 std::shared_ptr<LinkedList<HashPlayerData>>* HashTable::getArr() const{

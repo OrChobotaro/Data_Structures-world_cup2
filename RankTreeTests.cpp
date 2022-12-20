@@ -291,7 +291,7 @@ bool test_find_edge_cases() {
 
 
 
-int main(){
+int main3(){
     RUN_TEST(test_insert_RR);
     RUN_TEST(test_insert_LL);
     RUN_TEST(test_insert_Many_Nodes);
