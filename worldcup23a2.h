@@ -16,12 +16,20 @@
 #define WORLDCUP23A2_H_
 
 #include "wet2util.h"
+#include "UnionFindData.h"
+#include "hashTable.h"
+#include "RankTree.h"
+
 
 class world_cup_t {
 private:
-	//
-	// Here you may add anything you want
-	//
+    std::shared_ptr<AvlTree<TeamData>> m_teamTree;
+    HashTable* m_hashTable;
+    std::shared_ptr<RankTree> m_rankAbilityTree;
+
+    Node<TeamData>* findTeamAux(PlayerData* player);
+    Node<TeamData>* unionTeamsAux(Node<TeamData>* team1, Node<TeamData>* team2);
+
 	
 public:
 	// <DO-NOT-MODIFY> {

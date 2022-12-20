@@ -127,7 +127,7 @@ int PlayerData::getCalcTotalGamesPlayed() const {
 }
 
 
-int PlayerData::getCalcPartialSpirit() const {
+permutation_t PlayerData::getCalcPartialSpirit() const {
     return m_calcPartialSpirit;
 }
 
@@ -161,7 +161,7 @@ void PlayerData::setCalcTotalGamesPlayed(int calcGamesPlayed) {
     m_calcTotalGamesPlayed = calcGamesPlayed;
 }
 
-void PlayerData::setCalcPartialSpirit(int calcPartialSpirit) {
+void PlayerData::setCalcPartialSpirit(permutation_t calcPartialSpirit) {
     m_calcPartialSpirit = calcPartialSpirit;
 }
 
