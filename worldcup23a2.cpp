@@ -77,3 +77,46 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 	// TODO: Your code goes here
 	return StatusType::SUCCESS;
 }
+
+
+
+
+
+
+
+////// To check in the fatherFunc that player != nullptr
+Node<TeamData>* world_cup_t::findTeamAux(PlayerData *player) {
+    PlayerData* temp = player;
+    int sumTotalGamesPlayed = 0;
+    permutation_t multiplePartialSpirit = permutation_t::neutral();
+
+    PlayerData* reversedRoot = nullptr;
+    while (temp->getUp()) {
+        reversedRoot = temp;
+        sumTotalGamesPlayed += temp->getCalcTotalGamesPlayed();
+        multiplePartialSpirit = multiplePartialSpirit * temp->getCalcPartialSpirit();
+        temp = temp->getUp();
+    }
+
+    sumTotalGamesPlayed -= reversedRoot->getCalcTotalGamesPlayed();
+    multiplePartialSpirit = multiplePartialSpirit * (reversedRoot->getCalcPartialSpirit()).inv();
+
+    int toSubtract = 0;
+    permutation_t toDivide = permutation_t::neutral();
+
+    temp = player;
+    while (temp->getUp() != reversedRoot) {
+        int tempTotalGamesPlayed = temp->getCalcTotalGamesPlayed();
+        temp->setCalcTotalGamesPlayed(sumTotalGamesPlayed - toSubtract);
+
+        permutation_t tempPartialSpirit = temp->getCalcPartialSpirit();
+        temp->setCalcPartialSpirit(multiplePartialSpirit * toDivide.inv());
+
+        toSubtract += tempTotalGamesPlayed;
+        toDivide = toDivide * tempPartialSpirit;
+
+        temp->setUp(reversedRoot);
+        temp = temp->getUp();
+    }
+    return reversedRoot->getPtrTeam();
+}

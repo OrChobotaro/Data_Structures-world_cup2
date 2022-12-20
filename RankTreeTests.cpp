@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include "wet2util.h"
 #include "hashTable.h"
@@ -312,3 +313,4 @@ int main(){
 
 
 
+*/

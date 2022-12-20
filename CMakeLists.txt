@@ -25,5 +25,4 @@ add_executable(Data_Structures_ex2
         RankTree.h
         RankTree.cpp
         main.cpp
-        RankTreeTests.cpp
-        my_tests.cpp)
+        RankTreeTests.cpp)

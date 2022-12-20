@@ -75,7 +75,7 @@ public:
     bool isGoalKeeper() const;
     Node<TeamData>* getPtrTeam() const;
     int getCalcTotalGamesPlayed() const;
-    int getCalcPartialSpirit() const;
+    permutation_t getCalcPartialSpirit() const;
     PlayerData* getUp() const;
 
 
@@ -85,7 +85,7 @@ public:
     void setCards(int cards);
     void setPtrTeam(Node<TeamData>* node);
     void setCalcTotalGamesPlayed(int calcGamesPlayed);
-    void setCalcPartialSpirit(int calcPartialSpirit);
+    void setCalcPartialSpirit(permutation_t calcPartialSpirit);
     void setUp(PlayerData* up);
 
 
@@ -98,7 +98,7 @@ private:
     int m_cards;
     bool m_isGoalKeeper;
     int m_calcTotalGamesPlayed;
-    double m_calcPartialSpirit;
+    permutation_t m_calcPartialSpirit;
     Node<TeamData>* m_ptrTeam;
     PlayerData* m_up;
 };
