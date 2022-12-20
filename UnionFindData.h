@@ -97,8 +97,8 @@ private:
     int m_ability;
     int m_cards;
     bool m_isGoalKeeper;
-    int m_calcTotalGamesPlayed;
     double m_calcPartialSpirit;
+    int m_calcTotalGamesPlayed;
     Node<TeamData>* m_ptrTeam;
     PlayerData* m_up;
 };
