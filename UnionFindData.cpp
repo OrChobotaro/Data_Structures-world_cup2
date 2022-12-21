@@ -100,9 +100,9 @@ void TeamData::increaseTeamFieldsAfterUnion(PlayerData* other) {
 
 PlayerData::PlayerData(int playerID, const permutation_t& spirit, int gamesPlayed, int ability, int cards, bool goalKeeper) :
     m_playerID(playerID), m_spirit(spirit), m_individualGamesPlayed(gamesPlayed), m_ability(ability), m_cards(cards),
-    m_isGoalKeeper(goalKeeper), m_calcPartialSpirit(permutation_t::neutral()), m_calcTotalGamesPlayed(0), m_ptrTeam(nullptr),
-    m_up
-    (nullptr) {}
+
+    m_isGoalKeeper(goalKeeper), m_calcPartialSpirit(permutation_t::neutral()), m_calcTotalGamesPlayed(0), m_ptrTeam(nullptr), m_up(nullptr) {}
+
 
 
 
@@ -165,8 +165,8 @@ void PlayerData::setCards(int cards) {
     m_cards = cards;
 }
 
-void PlayerData::setPtrTeam(Node<TeamData> *node) {
-    m_ptrTeam = node;
+void PlayerData::setPtrTeam(Node<TeamData>* other) {
+    m_ptrTeam = other;
 }
 
 void PlayerData::setCalcTotalGamesPlayed(int calcGamesPlayed) {

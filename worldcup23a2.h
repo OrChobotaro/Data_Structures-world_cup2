@@ -22,33 +22,28 @@
 
 
 class world_cup_t {
-private:
-/*    std::shared_ptr<AvlTree<TeamData>> m_teamTree;
+
+public: // todo: change to private!!!
+    std::shared_ptr<AvlTree<TeamData>> m_teamTree;
     HashTable* m_hashTable;
-    std::shared_ptr<RankTree> m_rankAbilityTree;*/
+    std::shared_ptr<RankTree> m_rankAbilityTree;
 
     Node<TeamData>* findTeamAux(PlayerData* player);
     Node<TeamData>* unionTeamsAux(Node<TeamData>* team1, Node<TeamData>* team2);
 
-/*    void unionPlayerToEmptyTeam(int playerID, int teamID);
-    void unionPlayerToTeam(int playerID, int teamID);*/
 
-
-
-	
-public:
-	// <DO-NOT-MODIFY> {
-    //////////////////////////////////////TO DELETE!!!!!!!!!!!!!!!!!!
-    std::shared_ptr<AvlTree<TeamData>> m_teamTree;
-    HashTable* m_hashTable;
-    std::shared_ptr<RankTree> m_rankAbilityTree;
     bool unionPlayerToTeam(int playerID, int teamID);
     bool unionPlayerToEmptyTeam(PlayerData* playerNode, Node<TeamData>* teamNode);
     bool unionPlayerToRegularTeam(PlayerData* playerNode, Node<TeamData>* teamNode);
     bool unionBigBuyerTeamToSmallTeam(Node<TeamData>* bigTeamNode, Node<TeamData>* smallTeamNode);
     bool unionSmallBuyerTeamToBigTeam(Node<TeamData>* bigTeamNode, Node<TeamData>* smallTeamNode);
     Node<TeamData>* findTeamInTeamTree(int teamID, Node<TeamData>* root);
-    ///////////////////////////////////////////////End Of Delete
+
+
+	
+
+	// <DO-NOT-MODIFY> {
+
 
 	world_cup_t();
 	virtual ~world_cup_t();

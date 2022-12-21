@@ -19,7 +19,7 @@ public:
     AvlTree();
     AvlTree(const AvlTree<T>& otherTree) = default;
     AvlTree<T>& operator=(const AvlTree<T>& otherTree) = default;
-    ~AvlTree();
+    virtual ~AvlTree();
 
     StatusType insert(const T& key);
     StatusType insertToBinaryTree (Node<T>* node, const T& key);
@@ -62,8 +62,8 @@ private:
 
 
 };
-
-
+template<class T>
+int countNodes(Node<T>* root);
 
 template<class T>
 AvlTree<T>::AvlTree(): m_root(nullptr){}
@@ -533,6 +533,16 @@ Node<T>* AvlTree<T>::findParentBeforeInsert(const T &key) {
     return parent;
 }
 
+template<class T>
+int countNodes(Node<T>* root){
+
+    if(root == nullptr){
+        return 0;
+    }
+
+    return countNodes(root->getRight()) + countNodes(root->getLeft()) + 1;
+
+}
 
 
 

@@ -17,9 +17,9 @@ HashTable::~HashTable() {
 }
 
 
-void HashTable::insert(PlayerData* playerToInsert){
+void HashTable::insert(PlayerData* playerToInsert){  // todo: change func to bool?
 
-    // if exist, not add
+    // if existed, don't add
 
     if(playerToInsert->getPlayerID() <= 0){
         return;
