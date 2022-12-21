@@ -9,7 +9,7 @@ public:
     RankTree();
     RankTree(const RankTree& rankTree) = delete;
     RankTree& operator=(const RankTree& rankTree) = delete;
-    ~RankTree() = default;
+    ~RankTree() override = default;
 
     int calcTotalNodesInSubTree(Node<AbilityDataTeam>* node);
     void updateHeights(Node<AbilityDataTeam> *node) override;

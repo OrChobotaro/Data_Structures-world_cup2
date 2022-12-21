@@ -3,7 +3,7 @@
 
 
 TeamData::TeamData(int teamID): m_teamID(teamID), m_numPlayers(0), m_numGoalKeepers(0), m_points(0),
-    m_teamAbility(0), m_teamSpirit(nullptr), m_ptrPlayerReverseRoot(nullptr) {}
+    m_teamAbility(0), m_teamSpirit(permutation_t::neutral()), m_ptrPlayerReverseRoot(nullptr) {}
 
 
 bool TeamData::operator<(const TeamData& other) const{
@@ -90,7 +90,7 @@ void TeamData::increaseTeamAbility(int newPlayerAbility) {
 
 PlayerData::PlayerData(int playerID, const permutation_t& spirit, int gamesPlayed, int ability, int cards, bool goalKeeper) :
     m_playerID(playerID), m_spirit(spirit), m_individualGamesPlayed(gamesPlayed), m_ability(ability), m_cards(cards),
-    m_isGoalKeeper(goalKeeper), m_calcPartialSpirit(0), m_calcTotalGamesPlayed(0), m_ptrTeam(nullptr), m_up(nullptr) {}
+    m_isGoalKeeper(goalKeeper), m_calcPartialSpirit(permutation_t::neutral()), m_calcTotalGamesPlayed(0), m_ptrTeam(nullptr), m_up(nullptr) {}
 
 
 
@@ -153,8 +153,8 @@ void PlayerData::setCards(int cards) {
     m_cards = cards;
 }
 
-void PlayerData::setPtrTeam(Node<TeamData> *node) {
-    m_ptrTeam = node;
+void PlayerData::setPtrTeam(Node<TeamData>* other) {
+    m_ptrTeam = other;
 }
 
 void PlayerData::setCalcTotalGamesPlayed(int calcGamesPlayed) {
