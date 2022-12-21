@@ -56,7 +56,9 @@ PlayerData* UnionFind::makeSet(int playerID, const permutation_t &spirit, int ga
 Node<TeamData>* UnionFind::unionTeamsAux(Node<TeamData> *team1, Node<TeamData> *team2) {
     int numPlayersTeam1 = team1->getKey().getNumPlayers();
     int numPlayersTeam2 = team1->getKey().getNumPlayers();
+
 }
 */
+
 
 
