@@ -41,7 +41,8 @@ public:
     void setTeamSpirit(const permutation_t& teamSpirit);
     void setPtrPlayerReverseRoot(PlayerData* newRoot);
 
-    void increaseTeamAbility(int newPlayerAbility);
+    void increaseTeamAbility(int otherPlayerAbility);
+    void increaseTeamFieldsAfterUnion(PlayerData* other);
 
 
 private:
