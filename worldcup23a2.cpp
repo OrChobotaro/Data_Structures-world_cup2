@@ -176,6 +176,25 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId) // todo: te
 StatusType world_cup_t::add_player_cards(int playerId, int cards)
 {
 
+    if(playerId <= 0 || cards < 0){
+        return StatusType::INVALID_INPUT;
+    }
+
+    // if player doesnt exist:
+    PlayerData* player = m_hashTable->find(playerId);
+    if(!player){
+        return StatusType::FAILURE;
+    }
+    // check if player not in valid team:
+    Node<TeamData>* team = findTeamAux(player);
+
+    if(!team){
+        return StatusType::FAILURE;
+    }
+
+    player->increaseCards(cards);
+
+
 	return StatusType::SUCCESS;
 }
 
@@ -220,6 +239,10 @@ Node<TeamData>* world_cup_t::findTeamAux(PlayerData *player) {
     int sumTotalGamesPlayed = 0;
     permutation_t multiplePartialSpirit = permutation_t::neutral();
 
+    if(!temp->getUp()){
+        return player->getPtrTeam();
+    }
+
     PlayerData* reversedRoot = nullptr;
     while (temp->getUp()) {
         reversedRoot = temp;
@@ -228,9 +251,7 @@ Node<TeamData>* world_cup_t::findTeamAux(PlayerData *player) {
         temp = temp->getUp();
     }
 
-    if(!reversedRoot){
-        return player->getPtrTeam();
-    }
+    reversedRoot = reversedRoot->getUp();
 
     if (!reversedRoot->getPtrTeam()) {
         return nullptr;
