@@ -21,8 +21,8 @@ HashTable::~HashTable() {
         } else {
             LinkedListNode<HashPlayerData>* temp = m_arr[i]->getStart()->getNext();
             while(temp != m_arr[i]->getEnd()){
-                temp->getData().getPtr()->setUp(nullptr);
-                delete temp->getData().getPtr();
+                temp->m_data.getPtr()->setUp(nullptr);
+                delete temp->m_data.getPtr();
                 temp = temp->getNext();
             }
         }

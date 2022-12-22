@@ -78,8 +78,14 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     // adding player to hash
     m_hashTable->insert(newPlayer);
 
-    // todo: add - union to team
+    // todo: remove and add to rank tree
+    AbilityDataTeam abilityTempToDelete(teamId, team->getKey().getTeamAbility());
+    m_rankAbilityTree->remove(abilityTempToDelete);
+
     unionPlayerToTeam(playerId, team);
+
+    AbilityDataTeam abilityTempToInsert(teamId, team->getKey().getTeamAbility());
+    m_rankAbilityTree->insert(abilityTempToInsert);
 
 	return StatusType::SUCCESS;
 }
@@ -102,9 +108,34 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
 
 
     int totalTeam1 = team1->getKey().getTeamPoints() + team1->getKey().getTeamAbility();
+    int totalTeam2 = team2->getKey().getTeamPoints() + team2->getKey().getTeamAbility();
 
+    int team1Strengh = team1->getKey().getTeamSpirit().strength();
+    int team2Strengh = team2->getKey().getTeamSpirit().strength();
 
-	return StatusType::SUCCESS;
+    if(totalTeam1 > totalTeam2){
+        team1->m_key.increasePoints(3);
+        return 1;
+    }
+    else if (totalTeam2 > totalTeam1){
+        team2->m_key.increasePoints(3);
+        return 3;
+    }
+    else {
+        if(team1Strengh > team2Strengh){
+            team1->m_key.increasePoints(3);
+            return 2;
+        }
+        else if (team2Strengh > team1Strengh){
+            team2->m_key.increasePoints(3);
+            return 4;
+        }
+        else {
+            team1->m_key.increasePoints(1);
+            team2->m_key.increasePoints(1);
+            return 0;
+        }
+    }
 }
 
 output_t<int> world_cup_t::num_played_games_for_player(int playerId)

@@ -37,6 +37,7 @@ public:
     void setNumPlayers(int numPlayers);
     void setNumGoalKeepers(int numGoalKeepers);
     void setPoints(int points);
+    void increasePoints(int points);
     void setTeamAbility(int teamAbility);
     void setPtrPlayerReverseRoot(PlayerData* newRoot);
     void setTeamSpirit(const permutation_t& teamSpirit);
