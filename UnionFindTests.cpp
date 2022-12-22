@@ -1,4 +1,4 @@
-/*
+
 #include <iostream>
 #include "wet2util.h"
 #include "worldcup23a2.h"
@@ -372,38 +372,140 @@ bool test_union_bought_team_is_bigger() {
 }
 
 
-
-bool test_union_buyer() {
+bool test_union_empty_teams() {
     world_cup_t wc;
 
     TeamData team1(11);
     TeamData team2(12);
+    TeamData team3(13);
 
     wc.m_teamTree->insert(team1);
     wc.m_teamTree->insert(team2);
+    wc.m_teamTree->insert(team3);
 
     PlayerData* player1 = new PlayerData(1, permutation_t::neutral(), 3, 4, 5, true);
+    PlayerData* player2 = new PlayerData(2, permutation_t::neutral(), 5, 7, 2, false);
+    PlayerData* player3 = new PlayerData(3, permutation_t::neutral(), 1, 2, 2, true);
+    PlayerData* player4 = new PlayerData(4, permutation_t::neutral(), 8, 5, 7, false);
 
     wc.m_hashTable->insert(player1);
+    wc.m_hashTable->insert(player2);
+    wc.m_hashTable->insert(player3);
+    wc.m_hashTable->insert(player4);
+
 
     Node<TeamData>* teamNode11 = wc.findTeamInTeamTree(11, wc.m_teamTree->getRoot());
-    Node<TeamData>* teamNode12 = wc.findTeamInTeamTree(12, wc.m_teamTree->getRoot());
 
-    bool res7 = (teamNode11->getKey().getNumPlayers() == 0);
-    bool res8 = (teamNode11->getKey().getNumGoalKeepers() == 0);
-    bool res9 = (teamNode11->getKey().getTeamAbility() == 0);
-    bool res1 = wc.unionPlayerToTeam(1, teamNode11);
-    bool res2 = wc.unionPlayerToTeam(1, teamNode11);
-    bool res3 = wc.unionPlayerToTeam(1, teamNode12);
-    bool res4 = (teamNode11->getKey().getNumPlayers() == 1);
-    bool res5 = (teamNode11->getKey().getNumGoalKeepers() == 1);
-    bool res6 = (teamNode11->getKey().getTeamAbility() == 4);
+    StatusType res1 = wc.buy_team(11, 12);
 
-    return res1 == true && res2 == false && res3 == false &&
-           res4 == true && res5 == true && res6 == true &&
-           res7 == true && res8 == true && res9 == true;
+    bool res2 = (teamNode11->getKey().getNumPlayers() == 0);
+    bool res3 = (teamNode11->getKey().getNumGoalKeepers() == 0);
+    bool res4 = (teamNode11->getKey().getTeamAbility() == 0);
+    bool res5 = (teamNode11->getKey().getTeamID() == 11);
+
+    Node<TeamData>* res6 = wc.findTeamInTeamTree(12, wc.m_teamTree->getRoot());
+
+    return res1 == StatusType::SUCCESS  &&  res2 == true  &&  res3 == true  &&  res4 == true  &&  res5 == true &&
+            res6 == nullptr;
+}
+
+
+bool test_union_buyer_team_is_empty() {
+    world_cup_t wc;
+
+    TeamData team1(11);
+    TeamData team2(12);
+    TeamData team3(13);
+
+    wc.m_teamTree->insert(team1);
+    wc.m_teamTree->insert(team2);
+    wc.m_teamTree->insert(team3);
+
+    PlayerData *player1 = new PlayerData(1, permutation_t::neutral(), 3, 4, 5, true);
+    PlayerData *player2 = new PlayerData(2, permutation_t::neutral(), 5, 7, 2, false);
+    PlayerData *player3 = new PlayerData(3, permutation_t::neutral(), 1, 2, 2, true);
+    PlayerData *player4 = new PlayerData(4, permutation_t::neutral(), 8, 5, 7, false);
+
+    wc.m_hashTable->insert(player1);
+    wc.m_hashTable->insert(player2);
+    wc.m_hashTable->insert(player3);
+    wc.m_hashTable->insert(player4);
+
+    Node<TeamData> *teamNode11 = wc.findTeamInTeamTree(11, wc.m_teamTree->getRoot());
+    Node<TeamData> *teamNode12 = wc.findTeamInTeamTree(12, wc.m_teamTree->getRoot());
+
+    bool res1 = wc.unionPlayerToTeam(1, teamNode12);
+    bool res2 = wc.unionPlayerToTeam(2, teamNode12);
+    bool res3 = wc.unionPlayerToTeam(3, teamNode12);
+    bool res4 = wc.unionPlayerToTeam(4, teamNode12);
+
+    StatusType res5 = wc.buy_team(11, 12);
+
+    bool res6 = (teamNode11->getKey().getNumPlayers() == 4);
+    bool res7 = (teamNode11->getKey().getNumGoalKeepers() == 2);
+    bool res8 = (teamNode11->getKey().getTeamAbility() == 18);
+    bool res9 = (teamNode11->getKey().getTeamID() == 11);
+
+    Node<TeamData>* res10 = wc.findTeamInTeamTree(12, wc.m_teamTree->getRoot());
+
+    bool res11 = (teamNode11->getKey().getPtrPlayerReverseRoot() == player1);
+    bool res12 = (player1->getPtrTeam() == teamNode11);
+
+    return res1 == true  &&  res2 == true  &&  res3 == true  &&  res4 == true  &&  res5 == StatusType::SUCCESS &&
+           res6 == true  &&  res7 == true  &&  res8 == true  &&  res9 == true  && res10 == nullptr  &&
+           res11 == true  && res12 == true;
 
 }
+
+
+
+bool test_union_bought_team_is_empty() {
+    world_cup_t wc;
+
+    TeamData team1(11);
+    TeamData team2(12);
+    TeamData team3(13);
+
+    wc.m_teamTree->insert(team1);
+    wc.m_teamTree->insert(team2);
+    wc.m_teamTree->insert(team3);
+
+    PlayerData *player1 = new PlayerData(1, permutation_t::neutral(), 3, 4, 5, true);
+    PlayerData *player2 = new PlayerData(2, permutation_t::neutral(), 5, 7, 2, false);
+    PlayerData *player3 = new PlayerData(3, permutation_t::neutral(), 1, 2, 2, true);
+    PlayerData *player4 = new PlayerData(4, permutation_t::neutral(), 8, 5, 7, false);
+
+    wc.m_hashTable->insert(player1);
+    wc.m_hashTable->insert(player2);
+    wc.m_hashTable->insert(player3);
+    wc.m_hashTable->insert(player4);
+
+    Node<TeamData> *teamNode11 = wc.findTeamInTeamTree(11, wc.m_teamTree->getRoot());
+    Node<TeamData> *teamNode12 = wc.findTeamInTeamTree(12, wc.m_teamTree->getRoot());
+
+    bool res1 = wc.unionPlayerToTeam(1, teamNode11);
+    bool res2 = wc.unionPlayerToTeam(2, teamNode11);
+    bool res3 = wc.unionPlayerToTeam(3, teamNode11);
+    bool res4 = wc.unionPlayerToTeam(4, teamNode11);
+
+    StatusType res5 = wc.buy_team(11, 12);
+
+    bool res6 = (teamNode11->getKey().getNumPlayers() == 4);
+    bool res7 = (teamNode11->getKey().getNumGoalKeepers() == 2);
+    bool res8 = (teamNode11->getKey().getTeamAbility() == 18);
+    bool res9 = (teamNode11->getKey().getTeamID() == 11);
+
+    Node<TeamData>* res10 = wc.findTeamInTeamTree(12, wc.m_teamTree->getRoot());
+
+    bool res11 = (teamNode11->getKey().getPtrPlayerReverseRoot() == player1);
+    bool res12 = (player1->getPtrTeam() == teamNode11);
+
+    return res1 == true  &&  res2 == true  &&  res3 == true  &&  res4 == true  &&  res5 == StatusType::SUCCESS &&
+           res6 == true  &&  res7 == true  &&  res8 == true  &&  res9 == true  && res10 == nullptr  &&
+           res11 == true  && res12 == true;
+
+}
+
 
 
 
@@ -644,9 +746,12 @@ int main(){
     RUN_TEST(test_union_player_to_team);
     RUN_TEST(test_union_buyer_team_is_bigger);
     RUN_TEST(test_union_bought_team_is_bigger);
+    RUN_TEST(test_union_empty_teams);
+    RUN_TEST(test_union_buyer_team_is_empty);
+    RUN_TEST(test_union_bought_team_is_empty);
     RUN_TEST(test_find_basic);
     RUN_TEST(test_find_root);
-    RUN_TEST(test_find_nullptr);
+    //RUN_TEST(test_find_nullptr);
     return 0;
 }
-*/
+
