@@ -89,6 +89,7 @@ public:
     void setCalcTotalGamesPlayed(int calcGamesPlayed);
     void setCalcPartialSpirit(permutation_t calcPartialSpirit);
     void setUp(PlayerData* up);
+    void increaseCalcTotalGamesPlayed(int games);
 
 
 

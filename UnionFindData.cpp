@@ -185,7 +185,9 @@ void PlayerData::setUp(PlayerData *up) {
     m_up = up;
 }
 
-
+void PlayerData::increaseCalcTotalGamesPlayed(int games){
+    m_calcTotalGamesPlayed += games;
+}
 
 bool PlayerData::operator<(const PlayerData &other) const {
     return m_playerID < other.m_playerID;

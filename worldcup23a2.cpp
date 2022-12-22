@@ -106,12 +106,16 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
         return StatusType::FAILURE;
     }
 
+    // if both teams are valid, increase played games by 1.
+    team1->m_key.getPtrPlayerReverseRoot()->increaseCalcTotalGamesPlayed(1);
+    team2->m_key.getPtrPlayerReverseRoot()->increaseCalcTotalGamesPlayed(1);
 
     int totalTeam1 = team1->getKey().getTeamPoints() + team1->getKey().getTeamAbility();
     int totalTeam2 = team2->getKey().getTeamPoints() + team2->getKey().getTeamAbility();
 
     int team1Strengh = team1->getKey().getTeamSpirit().strength();
     int team2Strengh = team2->getKey().getTeamSpirit().strength();
+
 
     if(totalTeam1 > totalTeam2){
         team1->m_key.increasePoints(3);
@@ -136,6 +140,7 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
             return 0;
         }
     }
+
 }
 
 output_t<int> world_cup_t::num_played_games_for_player(int playerId) // todo: test when buy team is ready!!!
@@ -152,11 +157,16 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId) // todo: te
         return StatusType::FAILURE;
     }
 
+    // run find for shrinking - O(log*n)
+    findTeamAux(player);
+
     int gamesPlayedCounter = player->getIndividualGamesPlayed();
+
     // sum all calc fields
-    while(player->getUp()){
-        gamesPlayedCounter += player->getCalcTotalGamesPlayed();
-        player = player->getUp();
+    // after shrink, player node should point to reverse root
+    gamesPlayedCounter += player->getCalcTotalGamesPlayed();
+    if(player->getUp()){
+        gamesPlayedCounter += player->getUp()->getCalcTotalGamesPlayed();
     }
 
 
@@ -165,7 +175,7 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId) // todo: te
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards)
 {
-	// TODO: Your code goes here
+
 	return StatusType::SUCCESS;
 }
 
@@ -216,6 +226,10 @@ Node<TeamData>* world_cup_t::findTeamAux(PlayerData *player) {
         sumTotalGamesPlayed += temp->getCalcTotalGamesPlayed();
         multiplePartialSpirit = multiplePartialSpirit * temp->getCalcPartialSpirit();
         temp = temp->getUp();
+    }
+
+    if(!reversedRoot){
+        return player->getPtrTeam();
     }
 
     if (!reversedRoot->getPtrTeam()) {
