@@ -158,7 +158,7 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId) // todo: te
     }
 
     // run find for shrinking - O(log*n)
-    findTeamAux(player);
+    findTeam(player);
 
     int gamesPlayedCounter = player->getIndividualGamesPlayed();
 
@@ -186,7 +186,7 @@ StatusType world_cup_t::add_player_cards(int playerId, int cards)
         return StatusType::FAILURE;
     }
     // check if player not in valid team:
-    Node<TeamData>* team = findTeamAux(player);
+    Node<TeamData>* team = findTeam(player);
 
     if(!team){
         return StatusType::FAILURE;
@@ -200,14 +200,31 @@ StatusType world_cup_t::add_player_cards(int playerId, int cards)
 
 output_t<int> world_cup_t::get_player_cards(int playerId)
 {
-	// TODO: Your code goes here
-	return StatusType::SUCCESS;
+
+    if(playerId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+	PlayerData* player = m_hashTable->find(playerId);
+
+    if(!player){
+        return StatusType::FAILURE;
+    }
+
+	return player->getCards();
 }
 
 output_t<int> world_cup_t::get_team_points(int teamId)
 {
-	// TODO: Your code goes here
-	return 30003;
+	if(teamId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+
+    Node<TeamData>* team = m_teamTree->find(teamId);
+    if(!team){
+        return StatusType::FAILURE;
+    }
+
+	return team->getKey().getTeamPoints();
 }
 
 output_t<int> world_cup_t::get_ith_pointless_ability(int i)
@@ -280,7 +297,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 
 
 ////// To check in the fatherFunc that player != nullptr
-Node<TeamData>* world_cup_t::findTeamAux(PlayerData *player) {
+Node<TeamData>* world_cup_t::findTeam(PlayerData *player) {
     PlayerData* temp = player;
     int sumTotalGamesPlayed = 0;
     permutation_t multiplePartialSpirit = permutation_t::neutral();

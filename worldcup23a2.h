@@ -28,7 +28,7 @@ public: // todo: change to private!!!
     std::shared_ptr<HashTable> m_hashTable;
     std::shared_ptr<RankTree> m_rankAbilityTree;
 
-    Node<TeamData>* findTeamAux(PlayerData* player);
+    Node<TeamData>* findTeam(PlayerData* player);
     Node<TeamData>* unionTeamsAux(Node<TeamData>* team1, Node<TeamData>* team2);
 
 

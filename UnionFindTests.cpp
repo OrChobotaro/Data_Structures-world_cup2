@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include "wet2util.h"
 #include "worldcup23a2.h"
@@ -51,6 +52,8 @@ bool test_union_player_to_empty_team() {
             res7 == true && res8 == true && res9 == true;
 
 }
+
+
 
 
 
@@ -121,6 +124,8 @@ bool test_union_player_to_team() {
             res17 == true  &&  res18 == true  &&  res19 == true  &&  res20 == true &&
             res21 == true;
 }
+
+
 
 
 
@@ -220,6 +225,8 @@ bool test_union_buyer_team_is_bigger() {
 
 
     StatusType res10 = wc.buy_team(13, 11);
+
+
 
     //team11 not exist
     bool res11 = wc.m_teamTree->find(teamNode11->getKey());
@@ -401,7 +408,6 @@ bool test_union_buyer() {
 
 
 
-/*
 
 bool test_complex_union() {
         world_cup_t wc;
@@ -446,13 +452,15 @@ bool test_complex_union() {
 };
 
 
-*/
+
+
 
 
 int main(){
-    RUN_TEST(test_union_player_to_empty_team);
-    RUN_TEST(test_union_player_to_team);
-    RUN_TEST(test_union_buyer_team_is_bigger);
-    RUN_TEST(test_union_bought_team_is_bigger);
+//    RUN_TEST(test_union_player_to_empty_team);
+//    RUN_TEST(test_union_player_to_team);
+//    RUN_TEST(test_union_buyer_team_is_bigger);
+//    RUN_TEST(test_union_bought_team_is_bigger);
     return 0;
 }
+*/
