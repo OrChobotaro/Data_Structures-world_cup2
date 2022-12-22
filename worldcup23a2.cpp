@@ -8,7 +8,7 @@ world_cup_t::world_cup_t()
     m_teamTree = teamTree;
 
     // creating hash table
-    HashTable* hashTable = new HashTable(20);
+    std::shared_ptr<HashTable> hashTable(new HashTable(20));
     m_hashTable = hashTable;
 
     // creating rank tree
@@ -79,7 +79,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     m_hashTable->insert(newPlayer);
 
     // todo: add - union to team
-
+    unionPlayerToTeam(playerId, team);
 
 	return StatusType::SUCCESS;
 }
@@ -198,9 +198,9 @@ Node<TeamData>* world_cup_t::findTeamAux(PlayerData *player) {
 
 
 
-bool world_cup_t::unionPlayerToTeam(int playerID, int teamID) {
+bool world_cup_t::unionPlayerToTeam(int playerID, Node<TeamData>* teamNode) {
     PlayerData* playerNode = m_hashTable->find(playerID);
-    Node<TeamData>* teamNode = findTeamInTeamTree(teamID, m_teamTree->getRoot());
+
     if (!playerNode || !teamNode) {
         return false;
     }

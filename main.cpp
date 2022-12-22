@@ -1,11 +1,10 @@
-/*
 #include "RankTree.h"
 #include "worldcup23a2.h"
 #include <stdio.h>
 
 
 
-int main(){
+int main7(){
 
     AvlTree<int> tree;
 
@@ -46,11 +45,26 @@ int main(){
 
     Node<TeamData>* teamNode = wc.findTeamInTeamTree(12, wc.m_teamTree->getRoot());
 
-    wc.unionPlayerToEmptyTeam(1, teamNode);
-    wc.unionPlayerToTeam(2, teamNode);
-    wc.unionPlayerToTeam(3, teamNode);
 
 
     return 0;
 }
-*/
+/*
+
+#include "hashTable.h"
+
+
+int main(){
+    HashTable hash(10);
+    int per_arr[5] = {1,2,3,4,5};
+
+    permutation_t per(per_arr);
+    PlayerData data(8, per, 2, 5, 5,true);
+
+    hash.insert(&data);
+
+    std::shared_ptr<LinkedList<HashPlayerData>> list = hash.getArr()[8];
+
+    return list != nullptr && list->countNodes() == 1 && list->getStart()->getNext()->getData().getID() == 8;
+
+}*/

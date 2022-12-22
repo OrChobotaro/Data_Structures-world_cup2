@@ -13,6 +13,22 @@ HashTable::HashTable(int size): m_arrLength(size), m_capacity(0), m_perToRehash(
 }
 
 HashTable::~HashTable() {
+
+
+    for(int i=0; i<m_arrLength; i++){
+        if(m_arr[i] == nullptr){
+            continue;
+        } else {
+            LinkedListNode<HashPlayerData>* temp = m_arr[i]->getStart()->getNext();
+            while(temp != m_arr[i]->getEnd()){
+                temp->getData().getPtr()->setUp(nullptr);
+                delete temp->getData().getPtr();
+                temp = temp->getNext();
+            }
+        }
+    }
+
+
     deleteArr(m_arr, m_arrLength);
 }
 
@@ -22,6 +38,7 @@ void HashTable::insert(PlayerData* playerToInsert){  // todo: change func to boo
     // if existed, don't add
 
     if(playerToInsert->getPlayerID() <= 0){
+        delete playerToInsert;
         return;
     }
 

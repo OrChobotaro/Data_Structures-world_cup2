@@ -5,8 +5,8 @@
 
 class HashPlayerData {
 public:
-    HashPlayerData(int playerID, PlayerData* ptrPlayerUFNode);
     HashPlayerData(const HashPlayerData& otherData) = default;
+    HashPlayerData(int playerID, PlayerData* ptrPlayerUFNode);
     HashPlayerData& operator=(const HashPlayerData& otherData) = default;
     ~HashPlayerData() = default;
 
