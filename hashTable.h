@@ -14,8 +14,8 @@ public:
     HashTable& operator=(const HashTable& otherTable) = delete;
     ~HashTable();
 
-    void insert(PlayerData* playerToInsert);
     void rehash();
+    void insert(PlayerData* playerToInsert);
     void rehashAux(std::shared_ptr<LinkedList<HashPlayerData>>* newArr, int newLength);
     void deleteArr(std::shared_ptr<LinkedList<HashPlayerData>>* arr, int size) const;
     PlayerData* find(int playerID);

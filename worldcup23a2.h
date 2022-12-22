@@ -25,14 +25,14 @@ class world_cup_t {
 
 public: // todo: change to private!!!
     std::shared_ptr<AvlTree<TeamData>> m_teamTree;
-    HashTable* m_hashTable;
+    std::shared_ptr<HashTable> m_hashTable;
     std::shared_ptr<RankTree> m_rankAbilityTree;
 
     Node<TeamData>* findTeamAux(PlayerData* player);
     Node<TeamData>* unionTeamsAux(Node<TeamData>* team1, Node<TeamData>* team2);
 
 
-    bool unionPlayerToTeam(int playerID, int teamID);
+    bool unionPlayerToTeam(int playerID, Node<TeamData>* teamNode);
     bool unionPlayerToEmptyTeam(PlayerData* playerNode, Node<TeamData>* teamNode);
     bool unionPlayerToRegularTeam(PlayerData* playerNode, Node<TeamData>* teamNode);
     bool unionBigBuyerTeamToSmallTeam(Node<TeamData>* bigTeamNode, Node<TeamData>* smallTeamNode);
