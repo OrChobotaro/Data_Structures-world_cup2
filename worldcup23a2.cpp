@@ -106,12 +106,16 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
         return StatusType::FAILURE;
     }
 
+    // if both teams are valid, increase played games by 1.
+    team1->m_key.getPtrPlayerReverseRoot()->increaseCalcTotalGamesPlayed(1);
+    team2->m_key.getPtrPlayerReverseRoot()->increaseCalcTotalGamesPlayed(1);
 
     int totalTeam1 = team1->getKey().getTeamPoints() + team1->getKey().getTeamAbility();
     int totalTeam2 = team2->getKey().getTeamPoints() + team2->getKey().getTeamAbility();
 
     int team1Strengh = team1->getKey().getTeamSpirit().strength();
     int team2Strengh = team2->getKey().getTeamSpirit().strength();
+
 
     if(totalTeam1 > totalTeam2){
         team1->m_key.increasePoints(3);
@@ -136,17 +140,61 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
             return 0;
         }
     }
+
 }
 
-output_t<int> world_cup_t::num_played_games_for_player(int playerId)
+output_t<int> world_cup_t::num_played_games_for_player(int playerId) // todo: test when buy team is ready!!!
 {
-	// TODO: Your code goes here
-	return 22;
+
+    if(playerId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+
+	// find player in hash
+    PlayerData* player = m_hashTable->find(playerId);
+
+    if(!player){
+        return StatusType::FAILURE;
+    }
+
+    // run find for shrinking - O(log*n)
+    findTeamAux(player);
+
+    int gamesPlayedCounter = player->getIndividualGamesPlayed();
+
+    // sum all calc fields
+    // after shrink, player node should point to reverse root
+    gamesPlayedCounter += player->getCalcTotalGamesPlayed();
+    if(player->getUp()){
+        gamesPlayedCounter += player->getUp()->getCalcTotalGamesPlayed();
+    }
+
+
+	return gamesPlayedCounter;
 }
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards)
 {
-	// TODO: Your code goes here
+
+    if(playerId <= 0 || cards < 0){
+        return StatusType::INVALID_INPUT;
+    }
+
+    // if player doesnt exist:
+    PlayerData* player = m_hashTable->find(playerId);
+    if(!player){
+        return StatusType::FAILURE;
+    }
+    // check if player not in valid team:
+    Node<TeamData>* team = findTeamAux(player);
+
+    if(!team){
+        return StatusType::FAILURE;
+    }
+
+    player->increaseCards(cards);
+
+
 	return StatusType::SUCCESS;
 }
 
@@ -191,6 +239,10 @@ Node<TeamData>* world_cup_t::findTeamAux(PlayerData *player) {
     int sumTotalGamesPlayed = 0;
     permutation_t multiplePartialSpirit = permutation_t::neutral();
 
+    if(!temp->getUp()){
+        return player->getPtrTeam();
+    }
+
     PlayerData* reversedRoot = nullptr;
     while (temp->getUp()) {
         reversedRoot = temp;
@@ -198,6 +250,8 @@ Node<TeamData>* world_cup_t::findTeamAux(PlayerData *player) {
         multiplePartialSpirit = multiplePartialSpirit * temp->getCalcPartialSpirit();
         temp = temp->getUp();
     }
+
+    reversedRoot = reversedRoot->getUp();
 
     if (!reversedRoot->getPtrTeam()) {
         return nullptr;
