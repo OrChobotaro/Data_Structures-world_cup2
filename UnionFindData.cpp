@@ -64,6 +64,10 @@ void TeamData::setPoints(int points){
     m_points = points;
 }
 
+void TeamData::increasePoints(int points){
+    m_points+=points;
+}
+
 void TeamData::setTeamAbility(int teamAbility) {
     m_teamAbility = teamAbility;
 }
