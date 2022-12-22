@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include "wet2util.h"
 #include "worldcup23a2.h"
@@ -638,7 +639,6 @@ bool test_find_nullptr() {
 
 
 
-
 int main(){
     RUN_TEST(test_union_player_to_empty_team);
     RUN_TEST(test_union_player_to_team);
@@ -649,3 +649,4 @@ int main(){
     RUN_TEST(test_find_nullptr);
     return 0;
 }
+*/

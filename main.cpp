@@ -1,3 +1,4 @@
+/*
 #include "RankTree.h"
 #include "worldcup23a2.h"
 #include <stdio.h>
@@ -49,6 +50,7 @@ int main7(){
 
     return 0;
 }
+*/
 /*
 
 #include "hashTable.h"
@@ -68,3 +70,4 @@ int main(){
     return list != nullptr && list->countNodes() == 1 && list->getStart()->getNext()->getData().getID() == 8;
 
 }*/
+

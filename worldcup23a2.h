@@ -27,6 +27,7 @@ public: // todo: change to private!!!
     std::shared_ptr<AvlTree<TeamData>> m_teamTree;
     std::shared_ptr<HashTable> m_hashTable;
     std::shared_ptr<RankTree> m_rankAbilityTree;
+    int m_numberOfTeams;
 
     Node<TeamData>* findTeam(PlayerData* player);
     Node<TeamData>* unionTeamsAux(Node<TeamData>* team1, Node<TeamData>* team2);
