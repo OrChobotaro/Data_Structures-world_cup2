@@ -174,8 +174,54 @@ output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId)
 	return permutation_t();
 }
 
+
+
 StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 {
+    if (teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2) {
+        return StatusType::INVALID_INPUT;
+    }
+
+    Node<TeamData>* buyerTeam = findTeamInTeamTree(teamId1, m_teamTree->getRoot());
+    Node<TeamData>* boughtTeam = findTeamInTeamTree(teamId2, m_teamTree->getRoot());
+    if (!buyerTeam || !boughtTeam) {
+        return StatusType::FAILURE;
+    }
+
+    int numPlayersBuyerTeam = buyerTeam->getKey().getNumPlayers();
+    int numPlayersBoughtTeam = boughtTeam->getKey().getNumPlayers();
+
+    if (numPlayersBuyerTeam >= 0  &&  numPlayersBoughtTeam == 0) {
+        m_teamTree->remove(boughtTeam->getKey());
+        return StatusType::SUCCESS;
+    }
+
+    else if (numPlayersBuyerTeam == 0  &&  numPlayersBoughtTeam > 0) {
+        PlayerData* reversedRootBoughtTeam = boughtTeam->getKey().getPtrPlayerReverseRoot();
+        boughtTeam->m_key.setPtrPlayerReverseRoot(nullptr);
+        reversedRootBoughtTeam->setPtrTeam(buyerTeam);
+        buyerTeam->m_key.setPtrPlayerReverseRoot(reversedRootBoughtTeam);
+
+        buyerTeam->m_key.setNumPlayers(boughtTeam->getKey().getNumPlayers());
+        buyerTeam->m_key.setNumGoalKeepers(boughtTeam->getKey().getNumGoalKeepers());
+        buyerTeam->m_key.setPoints(boughtTeam->getKey().getTeamPoints());
+        buyerTeam->m_key.setTeamAbility(boughtTeam->getKey().getTeamAbility());
+        buyerTeam->m_key.setTeamSpirit(boughtTeam->getKey().getTeamSpirit());
+
+        m_teamTree->remove(boughtTeam->getKey());
+        return StatusType::SUCCESS;
+    }
+
+    else if (numPlayersBuyerTeam >= numPlayersBoughtTeam) {
+        unionBigBuyerTeamToSmallTeam(buyerTeam, boughtTeam);
+        return StatusType::SUCCESS;
+    }
+
+    else if (numPlayersBuyerTeam < numPlayersBoughtTeam) {
+        unionSmallBuyerTeamToBigTeam(boughtTeam, buyerTeam);
+        return StatusType::SUCCESS;
+    }
+
 	return StatusType::SUCCESS;
 }
 
@@ -198,6 +244,9 @@ Node<TeamData>* world_cup_t::findTeamAux(PlayerData *player) {
         multiplePartialSpirit = multiplePartialSpirit * temp->getCalcPartialSpirit();
         temp = temp->getUp();
     }
+
+    //////////////////////todo: check if reversedRoot exist - think what to do
+    //////////////////////if player
 
     if (!reversedRoot->getPtrTeam()) {
         return nullptr;
@@ -270,16 +319,11 @@ bool world_cup_t::unionPlayerToRegularTeam(PlayerData* playerNode, Node<TeamData
 
 
 
-bool world_cup_t::unionBigBuyerTeamToSmallTeam(Node<TeamData> *bigTeamNode, Node<TeamData> *smallTeamNode) {
-    if (!bigTeamNode || !smallTeamNode) {
-        return false;
-    }
+void world_cup_t::unionBigBuyerTeamToSmallTeam(Node<TeamData> *bigTeamNode, Node<TeamData> *smallTeamNode) {
 
     PlayerData* reversedRootBigTeam = bigTeamNode->getKey().getPtrPlayerReverseRoot();
     PlayerData* reversedRootSmallTeam = smallTeamNode->getKey().getPtrPlayerReverseRoot();
-    if (!reversedRootBigTeam && !reversedRootSmallTeam) {
-        return false;
-    }
+    assert(reversedRootBigTeam && reversedRootSmallTeam);
 
     int newNumPlayers = bigTeamNode->getKey().getNumPlayers() + smallTeamNode->getKey().getNumPlayers();
     int newNumGoalKeepers = bigTeamNode->getKey().getNumGoalKeepers() + smallTeamNode->getKey().getNumGoalKeepers();
@@ -310,22 +354,15 @@ bool world_cup_t::unionBigBuyerTeamToSmallTeam(Node<TeamData> *bigTeamNode, Node
     smallTeamNode->m_key.setPtrPlayerReverseRoot(nullptr);
 
     m_teamTree->remove(smallTeamNode->getKey());
-
-    return true;
 }
 
 
 
-bool world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node<TeamData> *smallTeamNode) {
-    if (!bigTeamNode || !smallTeamNode) {
-        return false;
-    }
+void world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node<TeamData> *smallTeamNode) {
 
     PlayerData* reversedRootBigTeam = bigTeamNode->getKey().getPtrPlayerReverseRoot();
     PlayerData* reversedRootSmallTeam = smallTeamNode->getKey().getPtrPlayerReverseRoot();
-    if (!reversedRootBigTeam && !reversedRootSmallTeam) {
-        return false;
-    }
+    assert(reversedRootBigTeam && reversedRootSmallTeam);
 
     int newNumPlayers = bigTeamNode->getKey().getNumPlayers() + smallTeamNode->getKey().getNumPlayers();
     int newNumGoalKeepers = bigTeamNode->getKey().getNumGoalKeepers() + smallTeamNode->getKey().getNumGoalKeepers();
@@ -358,7 +395,6 @@ bool world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node
     smallTeamNode->m_key.setPtrPlayerReverseRoot(nullptr);
 
     m_teamTree->remove(smallTeamNode->getKey());
-    return true;
 }
 
 
