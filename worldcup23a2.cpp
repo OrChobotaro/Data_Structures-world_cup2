@@ -1,5 +1,7 @@
 #include "worldcup23a2.h"
 
+// todo: update rank tree in union func
+
 world_cup_t::world_cup_t()
 {
 
@@ -14,6 +16,8 @@ world_cup_t::world_cup_t()
     // creating rank tree
     std::shared_ptr<RankTree> rankTree(new RankTree);
     m_rankAbilityTree = rankTree;
+
+    m_numberOfTeams = 0;
 }
 
 world_cup_t::~world_cup_t()
@@ -30,6 +34,9 @@ StatusType world_cup_t::add_team(int teamId)
         return StatusType::FAILURE;
     }
 
+    m_numberOfTeams++;
+    AbilityDataTeam abilityObj(teamId, 0);
+    m_rankAbilityTree->insert(abilityObj);
     return m_teamTree->insert(teamId);
 
 }
@@ -51,7 +58,7 @@ StatusType world_cup_t::remove_team(int teamId) // todo: test when adding player
     }
 
     m_teamTree->remove(teamId);
-
+    m_numberOfTeams--;
 	return StatusType::SUCCESS;
 }
 
@@ -229,14 +236,40 @@ output_t<int> world_cup_t::get_team_points(int teamId)
 
 output_t<int> world_cup_t::get_ith_pointless_ability(int i)
 {
-	// TODO: Your code goes here
-	return 12345;
+	// check there are teams in the system
+    if(!m_teamTree->getRoot() || i < 0 || i >= m_numberOfTeams){
+        return StatusType::FAILURE;
+    }
+
+    return m_rankAbilityTree->findIndex(i)->getKey().getTeamID();
+
 }
 
 output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId)
 {
-	// TODO: Your code goes here
-	return permutation_t();
+	if(playerId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+
+    PlayerData* player = m_hashTable->find(playerId);
+    if(!player){
+        return StatusType::FAILURE;
+    }
+
+    Node<TeamData>* team = findTeam(player);
+    if(!team){
+        return StatusType::FAILURE;
+    }
+
+    permutation_t per = permutation_t::neutral();
+
+    per = per * player->getSpirit();
+    per = per * player->getCalcPartialSpirit();
+    if(player->getUp()){
+        per = per * player->getUp()->getCalcPartialSpirit();
+    }
+
+	return per;
 }
 
 
