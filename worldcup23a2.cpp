@@ -316,7 +316,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
     }
 
     else if (numPlayersBuyerTeam < numPlayersBoughtTeam) {
-        unionSmallBuyerTeamToBigTeam(boughtTeam, buyerTeam);
+        unionSmallBuyerTeamToBigTeam(boughtTeam, &buyerTeam);
         return StatusType::SUCCESS;
     }
 
@@ -466,24 +466,24 @@ void world_cup_t::unionBigBuyerTeamToSmallTeam(Node<TeamData> *bigTeamNode, Node
 
 
 
-void world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node<TeamData> *smallTeamNode) {
+void world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node<TeamData> **smallTeamNode) {
 
     PlayerData* reversedRootBigTeam = bigTeamNode->getKey().getPtrPlayerReverseRoot();
-    PlayerData* reversedRootSmallTeam = smallTeamNode->getKey().getPtrPlayerReverseRoot();
+    PlayerData* reversedRootSmallTeam = (*smallTeamNode)->getKey().getPtrPlayerReverseRoot();
     assert(reversedRootBigTeam && reversedRootSmallTeam);
 
-    int newNumPlayers = bigTeamNode->getKey().getNumPlayers() + smallTeamNode->getKey().getNumPlayers();
-    int newNumGoalKeepers = bigTeamNode->getKey().getNumGoalKeepers() + smallTeamNode->getKey().getNumGoalKeepers();
-    int newPoints = bigTeamNode->getKey().getTeamPoints() + smallTeamNode->getKey().getTeamPoints();
-    int newAbility = bigTeamNode->getKey().getTeamAbility() + smallTeamNode->getKey().getTeamAbility();
-    permutation_t newSpirit = bigTeamNode->getKey().getTeamSpirit() * smallTeamNode->getKey().getTeamSpirit();
+    int newNumPlayers = bigTeamNode->getKey().getNumPlayers() + (*smallTeamNode)->getKey().getNumPlayers();
+    int newNumGoalKeepers = bigTeamNode->getKey().getNumGoalKeepers() + (*smallTeamNode)->getKey().getNumGoalKeepers();
+    int newPoints = bigTeamNode->getKey().getTeamPoints() + (*smallTeamNode)->getKey().getTeamPoints();
+    int newAbility = bigTeamNode->getKey().getTeamAbility() + (*smallTeamNode)->getKey().getTeamAbility();
+    permutation_t newSpirit = bigTeamNode->getKey().getTeamSpirit() * (*smallTeamNode)->getKey().getTeamSpirit();
 
     int newCalcTotalGamesPlayedSmallTeam = reversedRootSmallTeam->getCalcTotalGamesPlayed() -
                                            reversedRootBigTeam->getCalcTotalGamesPlayed();
     reversedRootSmallTeam->setCalcTotalGamesPlayed(newCalcTotalGamesPlayedSmallTeam);
 
     permutation_t newCalcPartialSpiritBigTeam = reversedRootBigTeam->getCalcPartialSpirit() *
-                                                                    smallTeamNode->getKey().getTeamSpirit();
+            (*smallTeamNode)->getKey().getTeamSpirit();
     reversedRootBigTeam->setCalcPartialSpirit(newCalcPartialSpiritBigTeam);
 
     permutation_t newCalcPartialSpiritSmallTeam = reversedRootSmallTeam->getCalcPartialSpirit() *
@@ -491,18 +491,20 @@ void world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node
     reversedRootSmallTeam->setCalcPartialSpirit(newCalcPartialSpiritSmallTeam);
 
 
-    bigTeamNode->m_key.setNumPlayers(newNumPlayers);
-    bigTeamNode->m_key.setNumGoalKeepers(newNumGoalKeepers);
-    bigTeamNode->m_key.setPoints(newPoints);
-    bigTeamNode->m_key.setTeamAbility(newAbility);
-    bigTeamNode->m_key.setTeamSpirit(newSpirit);
+    (*smallTeamNode)->m_key.setNumPlayers(newNumPlayers);
+    (*smallTeamNode)->m_key.setNumGoalKeepers(newNumGoalKeepers);
+    (*smallTeamNode)->m_key.setPoints(newPoints);
+    (*smallTeamNode)->m_key.setTeamAbility(newAbility);
+    (*smallTeamNode)->m_key.setTeamSpirit(newSpirit);
 
     reversedRootSmallTeam->setUp(reversedRootBigTeam);
     reversedRootSmallTeam->setPtrTeam(nullptr);
 
-    smallTeamNode->m_key.setPtrPlayerReverseRoot(nullptr);
+    (*smallTeamNode)->m_key.setPtrPlayerReverseRoot(reversedRootBigTeam);
+    reversedRootBigTeam->setPtrTeam(*smallTeamNode); ////
 
-    remove_team(smallTeamNode->getKey().getTeamID());
+    bigTeamNode->m_key.setPtrPlayerReverseRoot(nullptr);
+    remove_team(bigTeamNode->getKey().getTeamID());
 }
 
 

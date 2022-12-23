@@ -37,7 +37,7 @@ public: // todo: change to private!!!
     bool unionPlayerToEmptyTeam(PlayerData* playerNode, Node<TeamData>* teamNode);
     bool unionPlayerToRegularTeam(PlayerData* playerNode, Node<TeamData>* teamNode);
     void unionBigBuyerTeamToSmallTeam(Node<TeamData>* bigTeamNode, Node<TeamData>* smallTeamNode);
-    void unionSmallBuyerTeamToBigTeam(Node<TeamData>* bigTeamNode, Node<TeamData>* smallTeamNode);
+    void unionSmallBuyerTeamToBigTeam(Node<TeamData>* bigTeamNode, Node<TeamData>** smallTeamNode);
     Node<TeamData>* findTeamInTeamTree(int teamID, Node<TeamData>* root);
 
 
