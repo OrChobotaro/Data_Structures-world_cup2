@@ -395,23 +395,32 @@ bool world_cup_t::unionPlayerToTeam(int playerID, Node<TeamData>* teamNode) {
     if (playerNode->getPtrTeam() || playerNode->getUp()) {
         return false;
     }
+
+    AbilityDataTeam oldAbilityTeam(teamNode->getKey().getTeamID(), teamNode->getKey().getTeamAbility());
+    m_rankAbilityTree->remove(oldAbilityTeam);
+
     if (teamNode->getKey().getPtrPlayerReverseRoot()) {
-        return unionPlayerToRegularTeam(playerNode, teamNode);
+        unionPlayerToRegularTeam(playerNode, teamNode);
     }
-    return unionPlayerToEmptyTeam(playerNode, teamNode);
-}
+    else {
+        unionPlayerToEmptyTeam(playerNode, teamNode);
+    }
 
-
-bool world_cup_t::unionPlayerToEmptyTeam(PlayerData* playerNode, Node<TeamData>* teamNode) {
-    playerNode->setPtrTeam(teamNode);
-    teamNode->m_key.setPtrPlayerReverseRoot(playerNode);
-    teamNode->m_key.increaseTeamFieldsAfterUnion(playerNode);
+    AbilityDataTeam newAbilityTeam(teamNode->getKey().getTeamID(), teamNode->getKey().getTeamAbility());
+    m_rankAbilityTree->insert(newAbilityTeam);
     return true;
 }
 
 
+void world_cup_t::unionPlayerToEmptyTeam(PlayerData* playerNode, Node<TeamData>* teamNode) {
+    playerNode->setPtrTeam(teamNode);
+    teamNode->m_key.setPtrPlayerReverseRoot(playerNode);
+    teamNode->m_key.increaseTeamFieldsAfterUnion(playerNode);
+}
 
-bool world_cup_t::unionPlayerToRegularTeam(PlayerData* playerNode, Node<TeamData>* teamNode) {
+
+
+void world_cup_t::unionPlayerToRegularTeam(PlayerData* playerNode, Node<TeamData>* teamNode) {
     PlayerData* reversedRoot = teamNode->getKey().getPtrPlayerReverseRoot();
 
     playerNode->setCalcTotalGamesPlayed(-reversedRoot->getCalcTotalGamesPlayed());
@@ -421,8 +430,6 @@ bool world_cup_t::unionPlayerToRegularTeam(PlayerData* playerNode, Node<TeamData
 
     playerNode->setUp(reversedRoot);
     teamNode->m_key.increaseTeamFieldsAfterUnion(playerNode);
-
-    return true;
 }
 
 
@@ -438,6 +445,11 @@ void world_cup_t::unionBigBuyerTeamToSmallTeam(Node<TeamData> *bigTeamNode, Node
     int newPoints = bigTeamNode->getKey().getTeamPoints() + smallTeamNode->getKey().getTeamPoints();
     int newAbility = bigTeamNode->getKey().getTeamAbility() + smallTeamNode->getKey().getTeamAbility();
     permutation_t newSpirit = bigTeamNode->getKey().getTeamSpirit() * smallTeamNode->getKey().getTeamSpirit();
+
+    AbilityDataTeam oldAbilityBigTeam(bigTeamNode->getKey().getTeamID(), bigTeamNode->getKey().getTeamAbility());
+    m_rankAbilityTree->remove(oldAbilityBigTeam);
+    AbilityDataTeam oldAbilitySmallTeam(smallTeamNode->getKey().getTeamID(), smallTeamNode->getKey().getTeamAbility());
+    m_rankAbilityTree->remove(oldAbilitySmallTeam);
 
     int newCalcTotalGamesPlayedSmallTeam = reversedRootSmallTeam->getCalcTotalGamesPlayed() -
                                                                     reversedRootBigTeam->getCalcTotalGamesPlayed();
@@ -455,6 +467,9 @@ void world_cup_t::unionBigBuyerTeamToSmallTeam(Node<TeamData> *bigTeamNode, Node
     bigTeamNode->m_key.setPoints(newPoints);
     bigTeamNode->m_key.setTeamAbility(newAbility);
     bigTeamNode->m_key.setTeamSpirit(newSpirit);
+
+    AbilityDataTeam newAbilityBigTeam(bigTeamNode->getKey().getTeamID(), bigTeamNode->getKey().getTeamAbility());
+    m_rankAbilityTree->insert(newAbilityBigTeam);
 
     reversedRootSmallTeam->setUp(reversedRootBigTeam);
     reversedRootSmallTeam->setPtrTeam(nullptr);
@@ -478,6 +493,11 @@ void world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node
     int newAbility = bigTeamNode->getKey().getTeamAbility() + smallTeamNode->getKey().getTeamAbility();
     permutation_t newSpirit = bigTeamNode->getKey().getTeamSpirit() * smallTeamNode->getKey().getTeamSpirit();
 
+    AbilityDataTeam oldAbilityBigTeam(bigTeamNode->getKey().getTeamID(), bigTeamNode->getKey().getTeamAbility());
+    m_rankAbilityTree->remove(oldAbilityBigTeam);
+    AbilityDataTeam oldAbilitySmallTeam(smallTeamNode->getKey().getTeamID(), smallTeamNode->getKey().getTeamAbility());
+    m_rankAbilityTree->remove(oldAbilitySmallTeam);
+
     int newCalcTotalGamesPlayedSmallTeam = reversedRootSmallTeam->getCalcTotalGamesPlayed() -
                                            reversedRootBigTeam->getCalcTotalGamesPlayed();
     reversedRootSmallTeam->setCalcTotalGamesPlayed(newCalcTotalGamesPlayedSmallTeam);
@@ -496,6 +516,9 @@ void world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node
     bigTeamNode->m_key.setPoints(newPoints);
     bigTeamNode->m_key.setTeamAbility(newAbility);
     bigTeamNode->m_key.setTeamSpirit(newSpirit);
+
+    AbilityDataTeam newAbilityBigTeam(bigTeamNode->getKey().getTeamID(), bigTeamNode->getKey().getTeamAbility());
+    m_rankAbilityTree->insert(newAbilityBigTeam);
 
     reversedRootSmallTeam->setUp(reversedRootBigTeam);
     reversedRootSmallTeam->setPtrTeam(nullptr);
