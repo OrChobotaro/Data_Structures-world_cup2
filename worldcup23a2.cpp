@@ -519,8 +519,10 @@ void world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node
     (*smallTeamNode)->m_key.setTeamAbility(newAbility);
     (*smallTeamNode)->m_key.setTeamSpirit(newSpirit);
 
-    AbilityDataTeam newAbilityBigTeam(bigTeamNode->getKey().getTeamID(), bigTeamNode->getKey().getTeamAbility());
-    m_rankAbilityTree->insert(newAbilityBigTeam);
+
+    AbilityDataTeam newAbilitySmallTeam((*smallTeamNode)->getKey().getTeamID(), (*smallTeamNode)->getKey()
+    .getTeamAbility());
+    m_rankAbilityTree->insert(newAbilitySmallTeam);
 
     reversedRootSmallTeam->setUp(reversedRootBigTeam);
     reversedRootSmallTeam->setPtrTeam(nullptr);
