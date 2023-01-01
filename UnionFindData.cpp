@@ -81,6 +81,11 @@ void TeamData::setPtrPlayerReverseRoot(PlayerData *newRoot) {
 }
 
 
+void TeamData::setTeamID(int teamID) {
+    m_teamID = teamID;
+}
+
+
 void TeamData::increaseTeamAbility(int otherPlayerAbility) {
     m_teamAbility += otherPlayerAbility;
 }

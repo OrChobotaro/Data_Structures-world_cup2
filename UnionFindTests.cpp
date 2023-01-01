@@ -308,9 +308,9 @@ bool test_union_bought_team_is_bigger() {
 
     StatusType res4 = wc.buy_team(12, 11);
 
-    bool res13 = (teamNode11->getKey().getNumPlayers() == 3);
-    bool res14 = (teamNode11->getKey().getNumGoalKeepers() == 2);
-    bool res15 = (teamNode11->getKey().getTeamAbility() == 13);
+    bool res13 = (teamNode12->getKey().getNumPlayers() == 3);
+    bool res14 = (teamNode12->getKey().getNumGoalKeepers() == 2);
+    bool res15 = (teamNode12->getKey().getTeamAbility() == 13);
 
     bool res16 = (player2->getCalcTotalGamesPlayed() == -5);
     bool res17 = (player3->getCalcTotalGamesPlayed() == 2);
@@ -324,8 +324,8 @@ bool test_union_bought_team_is_bigger() {
     bool res19 = (player2->getCalcTotalGamesPlayed() == -5);
     bool res20 = (player3->getCalcTotalGamesPlayed() == 2);
 
-    //team12 not exist
-    bool res5 = wc.m_teamTree->find(TeamData(12));
+    //team11 not exist
+    bool res5 = wc.m_teamTree->find(TeamData(11));
 
 
     bool res6 = wc.unionPlayerToTeam(4, teamNode13);
@@ -350,10 +350,10 @@ bool test_union_bought_team_is_bigger() {
     bool res28 = (player7->getCalcTotalGamesPlayed() == -4);
 
 
-    StatusType res10 = wc.buy_team(11, 13);
+    StatusType res10 = wc.buy_team(12, 13);
 
-    //team11 not exist
-    bool res11 = wc.m_teamTree->find(TeamData(11));
+    //team13 not exist
+    bool res11 = wc.m_teamTree->find(TeamData(13));
 
     bool res29 = (player4->getCalcTotalGamesPlayed() == 10);
     bool res30 = (player5->getCalcTotalGamesPlayed() == 0);
@@ -363,7 +363,7 @@ bool test_union_bought_team_is_bigger() {
     bool res34 = (player2->getCalcTotalGamesPlayed() == -5);
     bool res35 = (player3->getCalcTotalGamesPlayed() == 2);
 
-    bool resRank3 = (wc.m_rankAbilityTree->find(AbilityDataTeam(11, 56)));
+    bool resRank3 = (wc.m_rankAbilityTree->find(AbilityDataTeam(12, 56)));
     bool resRank4 = (wc.m_rankAbilityTree->find(AbilityDataTeam(13, 43)));
 
 
