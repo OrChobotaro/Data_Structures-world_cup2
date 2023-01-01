@@ -57,8 +57,10 @@ StatusType world_cup_t::remove_team(int teamId) // todo: test when adding player
         team->getKey().setPtrPlayerReverseRoot(nullptr);
     }
 
+    AbilityDataTeam abilityNode(teamId, team->getKey().getTeamAbility());
     m_teamTree->remove(teamId);
     m_numberOfTeams--;
+    m_rankAbilityTree->remove(abilityNode);
 	return StatusType::SUCCESS;
 }
 
@@ -87,12 +89,12 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 
     // todo: remove and add to rank tree
     AbilityDataTeam abilityTempToDelete(teamId, team->getKey().getTeamAbility());
-    m_rankAbilityTree->remove(abilityTempToDelete);
+//    m_rankAbilityTree->remove(abilityTempToDelete);
 
     unionPlayerToTeam(playerId, team);
 
     AbilityDataTeam abilityTempToInsert(teamId, team->getKey().getTeamAbility());
-    m_rankAbilityTree->insert(abilityTempToInsert);
+//    m_rankAbilityTree->insert(abilityTempToInsert);
 
 	return StatusType::SUCCESS;
 }
@@ -495,7 +497,7 @@ void world_cup_t::unionSmallBuyerTeamToBigTeam(Node<TeamData> *bigTeamNode, Node
 
     AbilityDataTeam oldAbilityBigTeam(bigTeamNode->getKey().getTeamID(), bigTeamNode->getKey().getTeamAbility());
     m_rankAbilityTree->remove(oldAbilityBigTeam);
-    AbilityDataTeam oldAbilitySmallTeam(smallTeamNode->getKey().getTeamID(), smallTeamNode->getKey().getTeamAbility());
+    AbilityDataTeam oldAbilitySmallTeam((*smallTeamNode)->getKey().getTeamID(), (*smallTeamNode)->getKey().getTeamAbility());
     m_rankAbilityTree->remove(oldAbilitySmallTeam);
 
     int newCalcTotalGamesPlayedSmallTeam = reversedRootSmallTeam->getCalcTotalGamesPlayed() -
