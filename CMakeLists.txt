@@ -26,5 +26,9 @@ add_executable(Data_Structures_ex2_new
         RankTree.cpp
         main.cpp
         RankTreeTests.cpp
-        UnionFindTests.cpp)
+        UnionFindTests.cpp
+        my_tests.cpp
+        my_tests_buy_team.cpp
+        main23a2.cpp)
+
 

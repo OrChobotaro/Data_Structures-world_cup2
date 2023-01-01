@@ -1,3 +1,4 @@
+/*
 
 #include <iostream>
 #include "wet2util.h"
@@ -519,6 +520,7 @@ bool test_union_bought_team_is_empty() {
 
 
 
+*/
 /*bool test_complex_union() {
     world_cup_t wc;
 
@@ -559,7 +561,8 @@ bool test_union_bought_team_is_empty() {
     Node<TeamData>* teamNode13 = wc.findTeamInTeamTree(13, wc.m_teamTree->getRoot());
     Node<TeamData>* teamNode14 = wc.findTeamInTeamTree(14, wc.m_teamTree->getRoot());
     return true;
-};*/
+};*//*
+
 
 
 
@@ -764,3 +767,4 @@ int main(){
 }
 
 
+*/
