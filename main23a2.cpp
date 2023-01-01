@@ -1,4 +1,5 @@
-// 
+/*
+//
 // 234218 Data Structures 1.
 // Semester: 2023A (winter).
 // Wet Exercise #1.
@@ -145,3 +146,4 @@ void print(string cmd, output_t<T> res)
 	    cout << cmd << ": " << StatusTypeStr[(int) res.status()] << endl;
     }
 }
+*/
