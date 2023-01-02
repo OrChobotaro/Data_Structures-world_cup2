@@ -40,6 +40,8 @@ public: // todo: change to private!!!
     void unionSmallBuyerTeamToBigTeam(Node<TeamData>* bigTeamNode, Node<TeamData>** smallTeamNode);
     Node<TeamData>* findTeamInTeamTree(int teamID, Node<TeamData>* root);
 
+    permutation_t calcMultiple(PlayerData* player);
+
 
 	
 

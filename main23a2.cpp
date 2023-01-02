@@ -3,13 +3,13 @@
 // 234218 Data Structures 1.
 // Semester: 2023A (winter).
 // Wet Exercise #1.
-// 
+//
 // Recommended TAB size to view this file: 8.
-// 
+//
 // The following main file is necessary to link and run your code.
 // This file is READ ONLY: even if you submit something else, the compiler ..
 // .. WILL use our file.
-// 
+//
 
 #include "worldcup23a2.h"
 #include <string>
@@ -33,15 +33,15 @@ void print(string cmd, output_t<T> res);
 int main()
 {
 	cin >> std::boolalpha;
-	
+
 	int pid, tid, tid2;
 	int d1, d2, d3;
 	permutation_t p1;
 	bool b1;
-	
+
 	// Init
 	world_cup_t *obj = new world_cup_t();
-	
+
 	// Execute all commands in file
 	string op;
 	while (cin >> op)
@@ -106,7 +106,7 @@ int main()
 			cout << "Unknown command: " << op << endl;
 			return -1;
 		}
-		
+
 		// Verify no faults
 		if (cin.fail())
 		{
@@ -114,8 +114,8 @@ int main()
 			return -1;
 		}
 	}
-	
-	// Quit 
+
+	// Quit
 	delete obj;
 	return 0;
 }
@@ -129,7 +129,7 @@ static const char *StatusTypeStr[] =
 	"FAILURE"
 };
 
-void print(string cmd, StatusType res) 
+void print(string cmd, StatusType res)
 {
 	cout << cmd << ": " << StatusTypeStr[(int) res] << endl;
 }
