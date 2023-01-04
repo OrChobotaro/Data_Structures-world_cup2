@@ -170,17 +170,23 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId) // todo: te
     // run find for shrinking - O(log*n)
     findTeam(player);
 
-    int gamesPlayedCounter = player->getIndividualGamesPlayed();
+//    int gamesPlayedCounter = player->getIndividualGamesPlayed();
 
     // sum all calc fields
     // after shrink, player node should point to reverse root
-    gamesPlayedCounter += player->getCalcTotalGamesPlayed();
+   /* gamesPlayedCounter += player->getCalcTotalGamesPlayed();
     if(player->getUp()){
         gamesPlayedCounter += player->getUp()->getCalcTotalGamesPlayed();
+    }*/
+    int counter = player->getIndividualGamesPlayed();
+
+    while(player){
+        counter+=player->getCalcTotalGamesPlayed();
+        player = player->getUp();
     }
 
 
-	return gamesPlayedCounter;
+	return counter;
 }
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards)
@@ -303,11 +309,17 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
         reversedRootBoughtTeam->setPtrTeam(buyerTeam);
         buyerTeam->m_key.setPtrPlayerReverseRoot(reversedRootBoughtTeam);
 
+        AbilityDataTeam oldAbilityBigTeam(buyerTeam->getKey().getTeamID(), buyerTeam->getKey().getTeamAbility());
+        m_rankAbilityTree->remove(oldAbilityBigTeam);
+
         buyerTeam->m_key.setNumPlayers(boughtTeam->getKey().getNumPlayers());
         buyerTeam->m_key.setNumGoalKeepers(boughtTeam->getKey().getNumGoalKeepers());
         buyerTeam->m_key.setPoints(boughtTeam->getKey().getTeamPoints());
         buyerTeam->m_key.setTeamAbility(boughtTeam->getKey().getTeamAbility());
         buyerTeam->m_key.setTeamSpirit(boughtTeam->getKey().getTeamSpirit());
+
+        AbilityDataTeam newAbilityBigTeam(buyerTeam->m_key.getTeamID(), buyerTeam->m_key.getTeamAbility());
+        m_rankAbilityTree->insert(newAbilityBigTeam);
 
         remove_team(boughtTeam->getKey().getTeamID());;
         return StatusType::SUCCESS;
@@ -375,10 +387,10 @@ Node<TeamData>* world_cup_t::findTeam(PlayerData *player) {
         int tempTotalGamesPlayed = temp->getCalcTotalGamesPlayed();
         temp->setCalcTotalGamesPlayed(sumTotalGamesPlayed - toSubtract);
 
-        temp->setCalcPartialSpirit(reversedRoot->getSpirit().inv() * multiplePartialSpirit * toDivide); /// changed
+        temp->setCalcPartialSpirit(reversedRoot->getCalcPartialSpirit().inv() * multiplePartialSpirit * toDivide); /// changed
 
         toSubtract += tempTotalGamesPlayed;
-        toDivide = toDivide * temp->getSpirit().inv(); /// changed
+        toDivide = toDivide * temp->getCalcPartialSpirit().inv(); /// changed
 
         temp->setUp(reversedRoot);
         temp = temp->getUp();
@@ -436,7 +448,7 @@ void world_cup_t::unionPlayerToRegularTeam(PlayerData* playerNode, Node<TeamData
     PlayerData* reversedRoot = teamNode->getKey().getPtrPlayerReverseRoot();
     playerNode->setCalcTotalGamesPlayed(-(reversedRoot->getCalcTotalGamesPlayed()));
     permutation_t newTeamSpirit = teamNode->getKey().getTeamSpirit() * playerNode->getSpirit();
-    permutation_t newCalcPartialSpirit = (reversedRoot->getSpirit().inv() * newTeamSpirit); /// changed
+    permutation_t newCalcPartialSpirit = (reversedRoot->getCalcPartialSpirit().inv() * newTeamSpirit); /// changed todo: change to calcPartialSpirit
     playerNode->setCalcPartialSpirit(newCalcPartialSpirit);
 
     playerNode->setUp(reversedRoot);
@@ -467,8 +479,8 @@ void world_cup_t::unionBigBuyerTeamToSmallTeam(Node<TeamData> *bigTeamNode, Node
     reversedRootSmallTeam->setCalcTotalGamesPlayed(newCalcTotalGamesPlayedSmallTeam);
 
     permutation_t bigTeamSpirit = bigTeamNode->getKey().getTeamSpirit();
-    permutation_t reversedRootBigTeamSpirit = reversedRootBigTeam->getSpirit(); /// changed
-    permutation_t reversedRootSmallTeamSpirit = reversedRootSmallTeam->getSpirit(); /// changed
+    permutation_t reversedRootBigTeamSpirit = reversedRootBigTeam->getCalcPartialSpirit(); /// changed
+    permutation_t reversedRootSmallTeamSpirit = reversedRootSmallTeam->getCalcPartialSpirit(); /// changed
 
     reversedRootSmallTeam->setCalcPartialSpirit(reversedRootBigTeamSpirit.inv() * bigTeamSpirit
                                                 * reversedRootSmallTeamSpirit); /// changed
@@ -479,7 +491,7 @@ void world_cup_t::unionBigBuyerTeamToSmallTeam(Node<TeamData> *bigTeamNode, Node
     bigTeamNode->m_key.setTeamAbility(newAbility);
     bigTeamNode->m_key.setTeamSpirit(newSpirit);
 
-    AbilityDataTeam newAbilityBigTeam(bigTeamNode->getKey().getTeamID(), bigTeamNode->getKey().getTeamAbility());
+    AbilityDataTeam newAbilityBigTeam(bigTeamNode->m_key.getTeamID(), bigTeamNode->m_key.getTeamAbility());
     m_rankAbilityTree->insert(newAbilityBigTeam);
 
     reversedRootSmallTeam->setUp(reversedRootBigTeam);
