@@ -102,95 +102,111 @@ int main2(){
 
 }
 
+int get_played_game_no_shrinking(PlayerData* player){
+    int counter = player->getIndividualGamesPlayed();
+
+    while(player){
+        counter+=player->getCalcTotalGamesPlayed();
+        player = player->getUp();
+    }
+
+    return counter;
+}
 
 
 int main(){
 
-    world_cup_t* obj = new world_cup_t();
-
-    StatusType res = obj->add_team(1);
-//    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_team(2);
-//    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_team(3);
-    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_team(4);
-    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_team(5);
-    //REQUIRE(res == StatusType::SUCCESS);
-
-    res = obj->add_player(1001, 1, permutation_t::read("2,3,5,4,1"), 1, 1000, 0, true);
-    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(1002, 1, permutation_t::neutral(), 1, 1, 0, false);
-    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(2001, 2, permutation_t::read("4,2,1,5,3"), 1, 100, 0, true);
-    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(2002, 2, permutation_t::neutral(), 1, 1, 0, false);
-    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(3001, 3, permutation_t::read("5,4,3,2,1"), 1, 10000, 0, true);
-    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(4001, 4, permutation_t::neutral(), 1, 1, 0, true);
-    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(4002, 4, permutation_t::read("1,5,2,4,3"), 1, 10, 0, true);
-    //REQUIRE(res == StatusType::SUCCESS);
-    res = obj->add_player(5001, 5, permutation_t::neutral(), 1, 0, 0, true);
-    //REQUIRE(res == StatusType::SUCCESS);
-
-
-    output_t<permutation_t> res14 = obj->get_partial_spirit(1001);
-    //REQUIRE(res14.status() == StatusType::SUCCESS);
-    //REQUIRE(res14.ans() == permutation_t::read("2,3,5,4,1"));
-    output_t<permutation_t> res15 = obj->get_partial_spirit(2001);
-    //REQUIRE(res15.status() == StatusType::SUCCESS);
-    //REQUIRE(res15.ans() == permutation_t::read("4,2,1,5,3"));
-    output_t<permutation_t> res16 = obj->get_partial_spirit(3001);
-    //REQUIRE(res16.status() == StatusType::SUCCESS);
-    //REQUIRE(res16.ans() == permutation_t::read("5,4,3,2,1"));
-    output_t<permutation_t> res17 = obj->get_partial_spirit(4002);
-    //REQUIRE(res17.status() == StatusType::SUCCESS);
-    //REQUIRE(res17.ans() == permutation_t::read("1,5,2,4,3"));
-    output_t<permutation_t> res18 = obj->get_partial_spirit(5001);
-    //REQUIRE(res18.status() == StatusType::SUCCESS);
-    //REQUIRE(res18.ans() == permutation_t::neutral());
-
-    res = obj->buy_team(1, 2);
-    //REQUIRE(res == StatusType::SUCCESS);
-
-    output_t<permutation_t> res140 = obj->get_partial_spirit(1001);
-    //REQUIRE(res140.status() == StatusType::SUCCESS);
-    //REQUIRE(res140.ans() == permutation_t::read("2,3,5,4,1"));
-    output_t<permutation_t> res150 = obj->get_partial_spirit(2001);
-    //REQUIRE(res150.status() == StatusType::SUCCESS);
-    //REQUIRE(res150.ans() == permutation_t::read("4,3,2,1,5"));
-
-
-    res = obj->buy_team(3, 4);
-    //REQUIRE(res == StatusType::SUCCESS);
-
-    output_t<permutation_t> res161 = obj->get_partial_spirit(3001);
-    //REQUIRE(res161.status() == StatusType::SUCCESS);
-    //REQUIRE(res161.ans() == permutation_t::read("5,4,3,2,1"));
-    output_t<permutation_t> res171 = obj->get_partial_spirit(4002);
-    //REQUIRE(res171.status() == StatusType::SUCCESS);
-    //REQUIRE(res171.ans() == permutation_t::read("5,1,4,2,3"));
-
-
-
-    res = obj->buy_team(3, 5);
-    //REQUIRE(res == StatusType::SUCCESS);
-
-    output_t<permutation_t> res162 = obj->get_partial_spirit(3001);
-    //REQUIRE(res162.status() == StatusType::SUCCESS);
-    //REQUIRE(res162.ans() == permutation_t::read("5,4,3,2,1"));
-    output_t<permutation_t> res172 = obj->get_partial_spirit(4002);
-    //REQUIRE(res172.status() == StatusType::SUCCESS);
-    //REQUIRE(res172.ans() == permutation_t::read("5,1,4,2,3"));
-    output_t<permutation_t> res182 = obj->get_partial_spirit(5001);
-    //REQUIRE(res182.status() == StatusType::SUCCESS);
-    //REQUIRE(res182.ans() == permutation_t::read("5,1,4,2,3"));
+    world_cup_t wc;
+    wc.add_team(1);
+    wc.add_team(2);
+    wc.add_team(3);
+    wc.add_team(4);
+    wc.add_team(5);
+    wc.add_team(6);
+    wc.add_team(7);
+    wc.add_team(8);
+    wc.add_player(1,4,permutation_t::read("4,2,1,3,5"),5,203,67,true);
+    wc.add_player(2,1,permutation_t::read("4,2,5,1,3"),273,97,67,false);
+    wc.add_player(3,1,permutation_t::read("1,3,5,2,4"),9,75,218,true);
+    wc.add_player(4,7,permutation_t::read("2,3,4,1,5"),50,54,52,true);
+    wc.add_player(5,6,permutation_t::read("3,4,1,5,2"),109,76,94,false);
+    wc.add_player(6,1,permutation_t::read("5,2,1,3,4"),43,223,115,false);
+    wc.add_player(7,8,permutation_t::read("5,3,2,1,4"),276,174,282,false);
+    wc.add_player(8,4,permutation_t::read("1,3,5,2,4"),24,73,243,true);
+    wc.add_player(9,4,permutation_t::read("4,2,5,1,3"),205,189,1,false);
+    wc.add_player(10,2,permutation_t::read("3,2,5,1,4"),13,234,100,false);
+    wc.add_player(11,1,permutation_t::read("3,4,2,5,1"),154,123,275,false);
+    wc.add_player(12,3,permutation_t::read("5,1,3,2,4"),192,236,167,false);
+    wc.add_player(13,4,permutation_t::read("3,1,2,4,5"),116,50,39,true);
+    wc.add_player(14,3,permutation_t::read("4,1,3,5,2"),47,275,246,true);
+    wc.add_player(15,2,permutation_t::read("4,2,1,5,3"),254,174,9,true);
+    wc.add_player(16,2,permutation_t::read("4,5,2,3,1"),110,42,100,false);
+    wc.add_player(17,5,permutation_t::read("4,2,3,1,5"),92,20,68,true);
+    wc.add_player(18,3,permutation_t::read("1,3,2,4,5"),164,47,34,true);
+    wc.add_player(19,6,permutation_t::read("1,2,3,4,5"),207,142,4,false);
+    wc.add_player(20,5,permutation_t::read("5,2,1,4,3"),215,239,295,true);
+    wc.play_match(3,4);
+    wc.add_player_cards(9,90);
+    wc.get_team_points(1);
+    wc.get_ith_pointless_ability(1);
+    wc.add_player(21,7,permutation_t::read("4,1,2,3,5"),15,74,184,true);
+    wc.remove_team(4);
+    wc.play_match(3,8);
+    wc.get_team_points(5);
+    wc.get_player_cards(8);
+    wc.get_player_cards(6);
+    wc.add_player(22,7,permutation_t::read("5,4,2,3,1"),296,206,35,false);
+    PlayerData* player = wc.m_hashTable->find(22);
+    wc.add_player_cards(20,221);
+    wc.get_team_points(7);
+    wc.add_player(23,5,permutation_t::read("4,5,3,1,2"),113,96,133,false);
+    wc.add_player(24,5,permutation_t::read("1,4,3,5,2"),258,187,214,false);
+    wc.add_player(25,5,permutation_t::read("4,1,2,3,5"),286,119,130,false);
+    wc.add_player(26,3,permutation_t::read("5,4,2,1,3"),5,170,288,true);
+    wc.get_ith_pointless_ability(0);
+    wc.remove_team(8);
+    wc.get_ith_pointless_ability(1);
+    wc.play_match(7,2);
+    wc.get_ith_pointless_ability(4);
+    wc.get_player_cards(18);
+    wc.get_player_cards(19);
+    wc.get_team_points(5);
+    wc.remove_team(1);
+    wc.get_ith_pointless_ability(4);
+    wc.buy_team(7,3);
+    wc.get_player_cards(7);
+    wc.get_ith_pointless_ability(0);
+    wc.num_played_games_for_player(1);
+    wc.num_played_games_for_player(2);
+    wc.num_played_games_for_player(6);
+    wc.play_match(2,7);
+    wc.add_team(8);
+    wc.add_team(8);
+    wc.add_player(27,6,permutation_t::read("3,1,2,4,5"),22,165,286,false);
+    wc.get_player_cards(18);
+    wc.buy_team(5,2);
+    wc.remove_team(5);
+    wc.add_player_cards(10,151);
+    wc.buy_team(6,2);
+    wc.remove_team(6);
+    wc.get_team_points(3);
+    wc.play_match(7,2);
+    wc.add_player_cards(4,133);
+    wc.remove_team(7);
+    wc.num_played_games_for_player(2);
+    wc.add_team(4);
+    wc.get_ith_pointless_ability(0);
+    wc.play_match(2,3);
+    wc.add_player(27,2,permutation_t::read("1,4,5,2,3"),128,10,281,true);
+    wc.get_partial_spirit(12);
+    wc.get_ith_pointless_ability(1);
+    wc.add_player(27,2,permutation_t::read("3,2,4,1,5"),228,191,282,true);
+    wc.get_partial_spirit(26);
+    wc.num_played_games_for_player(22);
+    std::cout << wc.num_played_games_for_player(22).ans() << std::endl;
+    std::cout << get_played_game_no_shrinking(player);
 
     return 0;
-
 
 }
 
